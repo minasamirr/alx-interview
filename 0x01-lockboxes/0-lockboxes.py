@@ -1,5 +1,12 @@
 #!/usr/bin/python3
+"""Script will unlock list of lists"""
+
+
 def canUnlockAll(boxes):
+    """This function will take a list of lists and the content
+       of a list will unlock other lists
+    """
+
     n = len(boxes)
     opened = set()
     stack = [0]

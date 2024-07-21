@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 
+
 def print_stats(total_size, status_counts):
     """Print the accumulated metrics."""
     print("File size: {}".format(total_size))

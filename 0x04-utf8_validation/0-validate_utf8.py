@@ -29,7 +29,9 @@ def validUTF8(data):
                 n_bytes = 2
             elif (num >> 3) == 0b11110:
                 n_bytes = 3
-            elif (num >> 7) != 0:
+            elif (num >> 7) == 0:
+                continue
+            else:
                 return False
         else:
             # Check if the byte is of form 10xxxxxx

@@ -18,6 +18,9 @@ def validUTF8(data):
     n_bytes = 0
 
     for num in data:
+        if num < 0 or num > 255:
+            return False
+
         # Mask to get the least significant 8 bits
         num = num & 0xFF
 

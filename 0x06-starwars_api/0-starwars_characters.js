@@ -5,8 +5,7 @@ const movieId = process.argv[2];
 
 if (!movieId) {
   request(`${API_URL}/films/${movieId}/`, (err, _, body) => {
-    if (err)
-      console.log(err);
+    if (err) { console.log(err); }
     const charactersName = JSON.parse(body).characters.map(
       url => new Promise((resolve, reject) => {
         request(url, (promiseError, __, promiseBody) => {

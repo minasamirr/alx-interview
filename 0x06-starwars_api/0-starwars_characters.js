@@ -1,25 +1,47 @@
-#!/usr/bin/node
+#!/usr/bin/env node
+
 const request = require('request');
-const API_URL = 'https://swapi-api.hbtn.io/api';
+const movieId = process.argv[2];
 
-if (process.argv.length > 2) {
-  request(`${API_URL}/films/${process.argv[2]}/`, (err, _, body) => {
-    if (err) {
-      console.log(err);
-    }
-    const charactersURL = JSON.parse(body).characters;
-    const charactersName = charactersURL.map(
-      url => new Promise((resolve, reject) => {
-        request(url, (promiseErr, __, charactersReqBody) => {
-          if (promiseErr) {
-            reject(promiseErr);
-          }
-          resolve(JSON.parse(charactersReqBody).name);
-        });
-      }));
-
-    Promise.all(charactersName)
-      .then(names => console.log(names.join('\n')))
-      .catch(allErr => console.log(allErr));
-  });
+if (!movieId) {
+    console.error('Usage: ./0-starwars_characters.js <movie_id>');
+    process.exit(1);
 }
+
+function getStarWarsCharacters(movieId) {
+    const baseUrl = 'https://swapi.dev/api/films/';
+    const url = `${baseUrl}${movieId}/`;
+
+    request(url, { json: true }, (err, res, body) => {
+        if (err) {
+            console.error(`Error fetching data: ${err.message}`);
+            process.exit(1);
+        }
+
+        const charactersUrls = body.characters;
+
+        // Fetch and print each character's name
+        let remaining = charactersUrls.length;
+        if (remaining === 0) {
+            process.exit(0);
+        }
+
+        charactersUrls.forEach(characterUrl => {
+            request(characterUrl, { json: true }, (err, res, body) => {
+                if (err) {
+                    console.error(`Error fetching character data: ${err.message}`);
+                    process.exit(1);
+                }
+                
+                console.log(body.name);
+
+                remaining--;
+                if (remaining === 0) {
+                    process.exit(0);
+                }
+            });
+        });
+    });
+}
+
+getStarWarsCharacters(movieId);

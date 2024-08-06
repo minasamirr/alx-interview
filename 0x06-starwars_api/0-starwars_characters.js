@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/node
 
 const axios = require('axios');
 const movieId = process.argv[2];

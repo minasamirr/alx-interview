@@ -14,33 +14,23 @@ function getStarWarsCharacters(movieId) {
 
     request(url, { json: true }, (err, res, body) => {
         if (err) {
-            console.error(`Error fetching data: ${err.message}`);
-            process.exit(1);
+            console.error(err);
         }
 
-        const charactersUrls = body.characters;
-
-        // Fetch and print each character's name
-        let remaining = charactersUrls.length;
-        if (remaining === 0) {
-            process.exit(0);
-        }
-
-        charactersUrls.forEach(characterUrl => {
-            request(characterUrl, { json: true }, (err, res, body) => {
-                if (err) {
-                    console.error(`Error fetching character data: ${err.message}`);
-                    process.exit(1);
-                }
-                
-                console.log(body.name);
-
-                remaining--;
-                if (remaining === 0) {
-                    process.exit(0);
-                }
+        const charactersUrls = JSON.parse(body).characters;
+        const charactersName = charactersUrls.map(
+          url => new Promise((resolve, reject) => {
+            request(url, (promiseError, promiseResquet, promiseBody) => {
+              if (promiseError) {
+                reject(promiseError);
+              }
+              resolve(JSON.parse(promiseBody).name);
             });
-        });
+          }));
+    
+        Promise.all(charactersName)
+          .then(names => console.log(names.join('\n')))
+          .catch(allErr => console.log(allErr));
     });
 }
 

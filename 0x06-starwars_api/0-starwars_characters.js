@@ -8,7 +8,7 @@ if (!movieId) {
   process.exit(1);
 }
 
-async function getStarWarsCharacters(movieId) {
+async function getStarWarsCharacters (movieId) {
   const baseUrl = 'https://swapi.dev/api/films/';
   const url = `${baseUrl}${movieId}/`;
 
@@ -22,9 +22,9 @@ async function getStarWarsCharacters(movieId) {
 
     // Fetch and print each character's name
     for (const characterUrl of charactersUrls) {
-        const charResponse = await axios.get(characterUrl);
-        const charData = charResponse.data;
-        console.log(charData.name);
+      const charResponse = await axios.get(characterUrl);
+      const charData = charResponse.data;
+      console.log(charData.name);
     }
   } catch (error) {
     console.error(`Error fetching data: ${error.message}`);

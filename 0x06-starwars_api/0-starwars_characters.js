@@ -10,7 +10,7 @@ if (!movieId) {
 
 function getStarWarsCharacters(movieId) {
     const baseUrl = 'https://swapi.dev/api/films/';
-    const url = `${baseUrl}${movieId}/`;
+    const url = `${baseUrl}/films/${movieId}/`;
 
     request(url, { json: true }, (err, res, body) => {
         if (err) {
